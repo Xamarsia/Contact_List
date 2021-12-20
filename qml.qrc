@@ -1,0 +1,11 @@
+<RCC>
+    <qresource prefix="/">
+        <file>main.qml</file>
+        <file>Background.qml</file>
+        <file>ContactListItem.qml</file>
+        <file>ContactListView.qml</file>
+        <file>ContactGridView.qml</file>
+        <file>ContactGridItem.qml</file>
+        <file>ProgrammToolBar.qml</file>
+    </qresource>
+</RCC>

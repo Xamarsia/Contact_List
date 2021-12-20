@@ -1,0 +1,27 @@
+<RCC>
+    <qresource prefix="/">
+        <file>contacts/beard.png</file>
+        <file>contacts/customer-service(1).png</file>
+        <file>contacts/customer-service.png</file>
+        <file>contacts/happy.png</file>
+        <file>contacts/help-desk.png</file>
+        <file>contacts/man(1).png</file>
+        <file>contacts/man(2).png</file>
+        <file>contacts/man(3).png</file>
+        <file>contacts/man(4).png</file>
+        <file>contacts/man(5).png</file>
+        <file>contacts/man(6).png</file>
+        <file>contacts/man(7).png</file>
+        <file>contacts/man(8).png</file>
+        <file>contacts/man(9).png</file>
+        <file>contacts/man.png</file>
+        <file>contacts/woman(1).png</file>
+        <file>contacts/woman.png</file>
+        <file>call/icons8-call-96.png</file>
+        <file>contacts/curly-hair-man.png</file>
+        <file>contacts/man11.png</file>
+        <file>contacts/man12.png</file>
+        <file>star/emptyStar.png</file>
+        <file>star/star.png</file>
+    </qresource>
+</RCC>
