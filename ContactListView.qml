@@ -12,6 +12,12 @@ ListView
     clip: true
     spacing: 5
 
+    section.property: "name"
+    section.criteria: ViewSection.FirstCharacter
+    section.delegate: SectionDelegate {
+        width: root.width
+    }
+
     Component
     {
         id: contactDelegate

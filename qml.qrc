@@ -7,5 +7,6 @@
         <file>ContactGridView.qml</file>
         <file>ContactGridItem.qml</file>
         <file>ProgrammToolBar.qml</file>
+        <file>SectionDelegate.qml</file>
     </qresource>
 </RCC>
