@@ -7,7 +7,12 @@ ListView
     signal callClicked(int id)
 
     anchors.margins: 20
-    delegate: contactDelegate
+    delegate: ContactListItem
+    {
+        onBackgroundClicked: root.currentIndex = index
+
+        width: root.width
+    }
     focus: true
     clip: true
     spacing: 5
@@ -16,22 +21,5 @@ ListView
     section.criteria: ViewSection.FirstCharacter
     section.delegate: SectionDelegate {
         width: root.width
-    }
-
-    Component
-    {
-        id: contactDelegate
-
-        ContactListItem
-        {
-            text: model.name
-            width: root.width
-            color: ListView.isCurrentItem? "#00838F" : "#00ACC1"
-            imageSource: model.image
-            onCallClicked: root.callClicked(model.id)
-            onBackgroundClicked: root.currentIndex = index
-            favorite: model.favorite
-            onFavoriteChanged: model.favorite = favorite
-        }
     }
 }

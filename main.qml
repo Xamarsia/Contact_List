@@ -53,11 +53,6 @@ ApplicationWindow
         {
             anchors.fill: parent
             model: contactProxyModel
-            onCallClicked:
-                function(id)
-                {
-                    contactProxyModel.call(id)
-                }
         }
     }
 
