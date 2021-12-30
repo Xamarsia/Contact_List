@@ -8,5 +8,9 @@
         <file>ContactGridItem.qml</file>
         <file>ProgrammToolBar.qml</file>
         <file>SectionDelegate.qml</file>
+        <file>FullContactInfo.qml</file>
+        <file>BaseContactInfo.qml</file>
+        <file>ContactPage.qml</file>
+        <file>ContactView.qml</file>
     </qresource>
 </RCC>

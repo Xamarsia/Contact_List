@@ -5,6 +5,13 @@ import QtGraphicalEffects 1.0
 
 RowLayout
 {
+    id:root
+
+    property bool favorite: model.favorite
+
+    signal imageClicked()
+    onFavoriteChanged: model.favorite = favorite
+
     height: 74
 
     Image
@@ -30,6 +37,10 @@ RowLayout
             anchors.fill: parent
             radius: Math.max(width, height)
             visible: false
+        }
+        MouseArea{
+            anchors.fill: parent
+            onClicked: root.imageClicked()
         }
     }
 

@@ -8,17 +8,33 @@ ToolBar
 
     property bool showOnlyFavorite: false
     property bool showGrid: false
+    signal previousPage()
 
     signal filterChanged(string filter)
+
 
     RowLayout
     {
         anchors.fill: parent
-        Button
-        {
-            Layout.alignment: Qt.AlignVCenter | Qt.AlignLeft
-            text: qsTr("Favorite")
-            onClicked: showOnlyFavorite = !showOnlyFavorite
+
+        ToolButton {
+            text: qsTr("‹")
+            onClicked: root.previousPage()
+        }
+
+        ToolButton {
+           text: qsTr("⋮")
+           onClicked: optionsMenu.open()
+           Layout.alignment: Qt.AlignVCenter | Qt.AlignLeft
+
+           Menu {
+               id: optionsMenu
+               x: parent.width - width
+               Action {
+                   text: qsTr("Favorite")
+                   onTriggered: showOnlyFavorite = !showOnlyFavorite
+               }
+           }
         }
 
         Button

@@ -5,13 +5,15 @@ ListView
     id: root
 
     signal callClicked(int id)
+    signal openPage()
 
     anchors.margins: 20
     delegate: ContactListItem
     {
-        onBackgroundClicked: root.currentIndex = index
+        onBackgroundClicked: root.currentIndex = index;
+        onContactImagePressed: root.openPage()
 
-        width: root.width
+        width: root.width;
     }
     focus: true
     clip: true

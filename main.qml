@@ -8,66 +8,48 @@ ApplicationWindow
     id: root
 
     property bool onlyFavorite: false
-    property bool grid: false
-    property var contactView: undefined
 
     width: 440
     height: 480
     visible: true
     title: qsTr("Hello World")
 
-    onGridChanged: changeContactView(grid)
     onOnlyFavoriteChanged: contactProxyModel.showOnlyFavorite(onlyFavorite)
-    Component.onCompleted: changeContactView(false)
 
-    function changeContactView(grid)
-    {
-        if(contactView != undefined)
-        {
-            contactView.destroy()
-        }
-        contactView = grid? gridComponent.createObject(background) : listComponent.createObject(background)
-    }
-
-    header: ProgrammToolBar
-    {
+    header: ProgrammToolBar{
         onShowOnlyFavoriteChanged: root.onlyFavorite = showOnlyFavorite
-        onShowGridChanged: root.grid = showGrid
-        onFilterChanged:
-            function(filter)
-            {
-                contactProxyModel.setFilter(filter)
+        onShowGridChanged: contactView.grid = showGrid
+
+        onPreviousPage:{
+            if(stackView.depth >= 1){
+                stackView.pop()
             }
+        }
+
+        onFilterChanged: function(filter){
+            contactProxyModel.setFilter(filter)
+        }
     }
 
-    Background
-    {
-        id: background
+    StackView {
+        id: stackView
+        
+        initialItem: background
         anchors.fill: parent
     }
 
-    Component
-    {
-        id: listComponent
-        ContactListView
-        {
-            anchors.fill: parent
-            model: contactProxyModel
-        }
+    Background{
+        id: background
+
+        anchors.fill: parent
     }
 
-    Component
-    {
-        id: gridComponent
-        ContactGridView
-        {
-            anchors.fill: parent
-            model: contactProxyModel
-            onCallClicked:
-                function(id)
-                {
-                    contactProxyModel.call(id)
-                }
+    ContactView{
+        id:contactView
+        anchors.fill: parent
+        onAddPage:{
+            stackView.push("qrc:/ContactPage.qml")
+            contactPage.visible = true;
         }
     }
 }

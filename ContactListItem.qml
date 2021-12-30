@@ -6,10 +6,9 @@ Rectangle
 {
     id: root
 
-    onFavoriteChanged: model.favorite = favorite
+    signal contactImagePressed();
+    signal backgroundClicked();
 
-    property bool favorite: model.favorite
-    signal backgroundClicked()
 
     width: 120
     height: 74
@@ -42,7 +41,10 @@ Rectangle
         anchors.fill: parent
 
         BaseContactInfo{
-        width: parent.width
+            width: parent.width
+            onImageClicked: {
+                root.contactImagePressed()
+            }
         }
 
         FullContactInfo{
