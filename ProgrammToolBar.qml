@@ -12,7 +12,6 @@ ToolBar
 
     signal filterChanged(string filter)
 
-
     RowLayout
     {
         anchors.fill: parent
@@ -20,6 +19,17 @@ ToolBar
         ToolButton {
             text: qsTr("‹")
             onClicked: root.previousPage()
+        }
+
+        TextField
+        {
+            placeholderText: qsTr("Filter")
+
+            onTextChanged: filterChanged(text)
+
+            horizontalAlignment: Qt.AlignHCenter
+            verticalAlignment: Qt.AlignVCenter
+            Layout.fillWidth: true
         }
 
         ToolButton {
@@ -30,36 +40,38 @@ ToolBar
            Menu {
                id: optionsMenu
                x: parent.width - width
+               transformOrigin: Menu.TopRight
+
+               Action {
+                   text: qsTr("All")
+
+                   onTriggered: showOnlyFavorite = false
+               }
+
                Action {
                    text: qsTr("Favorite")
+
                    onTriggered: showOnlyFavorite = !showOnlyFavorite
                }
+
+               Action
+               {
+                   text: qsTr("Grid")
+
+                   onTriggered:
+                   {
+                       showGrid = !showGrid
+                       if(showGrid)
+                       {
+                           text = qsTr("List")
+                       }
+                       else
+                       {
+                           text = qsTr("Grid")
+                       }
+                   }
+               }
            }
-        }
-
-        Button
-        {
-            Layout.alignment: Qt.AlignVCenter | Qt.AlignLeft
-            text: qsTr("Grid")
-            onClicked:
-            {
-                showGrid = !showGrid
-                if(showGrid)
-                {
-                    text = qsTr("List")
-                }
-                else
-                {
-                    text = qsTr("Grid")
-                }
-            }
-        }
-
-        TextField
-        {
-            placeholderText: qsTr("Filter")
-            Layout.alignment: Qt.AlignVCenter | Qt.AlignLeft
-            onTextChanged: filterChanged(text)
         }
     }
 }

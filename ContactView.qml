@@ -3,6 +3,7 @@ import QtQuick.Layouts 1.12
 import QtGraphicalEffects 1.0
 
 Item {
+    id: root
 
     property bool grid: false
     property var contactView: undefined
@@ -18,14 +19,13 @@ Item {
         {
             contactView.destroy()
         }
-        contactView = grid? gridComponent.createObject(background) : listComponent.createObject(background)
+        contactView = grid ? gridComponent.createObject(root) : listComponent.createObject(root)
     }
-
-
 
     Component
     {
         id: listComponent
+
         ContactListView
         {
             id:contactList
@@ -39,6 +39,7 @@ Item {
     Component
     {
         id: gridComponent
+
         ContactGridView
         {
             anchors.fill: parent
@@ -49,10 +50,4 @@ Item {
                 }
         }
     }
-
-
-
-
-
-
 }

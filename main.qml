@@ -18,10 +18,10 @@ ApplicationWindow
 
     header: ProgrammToolBar{
         onShowOnlyFavoriteChanged: root.onlyFavorite = showOnlyFavorite
-        onShowGridChanged: contactView.grid = showGrid
+        onShowGridChanged: contactView.grid = showGridI
 
         onPreviousPage:{
-            if(stackView.depth >= 1){
+            if(stackView.depth > 1){
                 stackView.pop()
             }
         }
@@ -31,25 +31,22 @@ ApplicationWindow
         }
     }
 
-    StackView {
-        id: stackView
-        
-        initialItem: background
-        anchors.fill: parent
-    }
-
     Background{
         id: background
 
         anchors.fill: parent
-    }
 
-    ContactView{
-        id:contactView
-        anchors.fill: parent
-        onAddPage:{
-            stackView.push("qrc:/ContactPage.qml")
-            contactPage.visible = true;
+        StackView {
+            id: stackView
+            
+            anchors.fill: parent
+            initialItem: ContactView {
+                id:contactView
+
+                onAddPage:{
+                    stackView.push("qrc:/ContactPage.qml")
+                }
+            }
         }
     }
 }
