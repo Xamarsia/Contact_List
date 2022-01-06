@@ -1,72 +1,180 @@
 #include "contactmodel.h"
 
 ContactModel::ContactModel(QObject *parent)
-    : QAbstractListModel(parent)
-{
+    : QAbstractListModel(parent){
     m_roleNames[NameRole] = "name";
-    m_roleNames[IdRole] = "id";
+    m_roleNames[PhoneNumberRole] = "phoneNumber";
     m_roleNames[ImageRole] = "image";
     m_roleNames[FavoriteRole] = "favorite";
+    m_roleNames[TagRole] = "tag";
+    m_roleNames[EmailRole] = "email";
+    m_roleNames[BirthdayRole] = "birthday";
+    m_roleNames[NotesRole] = "notes";
+    m_roleNames[IdRole] = "id";
 
-    for(const ContactListProvider::Contact& contact : ContactListProvider::getContactsList())
-    {
-        m_data.append(ContactData{contact, false});
+    for(const Contact& contact : ContactListProvider::getContactsList()) {
+        m_contacts.append(contact);
     }
 }
 
-int ContactModel::rowCount(const QModelIndex &parent) const
-{
+int ContactModel::rowCount(const QModelIndex &parent) const {
     Q_UNUSED(parent);
-    return ContactListProvider::getContactsList().size();
+    return m_contacts.size();
 }
 
-QVariant ContactModel::data(const QModelIndex &index, int role) const
-{
+Contact ContactModel::dataContact(const QModelIndex &index){
     int row = index.row();
-    if(row < 0 || row >= m_data.count())
-    {
+    if(row < 0 || row >= m_contacts.count()) {
+        return {};
+    }
+
+    const Contact &contact = m_contacts[row];
+    if(ContactRole){
+        return contact;
+    }
+}
+
+QVariant ContactModel::data(const QModelIndex &index, int role) const {
+    int row = index.row();
+    if(row < 0 || row >= m_contacts.count()) {
         return QVariant();
     }
 
-    const ContactData &contactData = m_data[row];
+    const Contact &contact = m_contacts[row];
 
-    switch(role)
-    {
+    switch(role){
         case NameRole:
-            return contactData.contact.name;
-        case IdRole:
-            return contactData.contact.id;
+            return contact.fullName;
+        case PhoneNumberRole:
+            return contact.phoneNumber;
         case ImageRole:
-            return contactData.contact.image;
+            return contact.image;
         case FavoriteRole:
-            return contactData.favorite;
+            return contact.favorite;
+        case TagRole:
+            return contact.tag;
+        case EmailRole:
+            return contact.email;
+        case BirthdayRole:
+            return contact.birthday;
+        case NotesRole:
+            return contact.notes;
+        case IdRole:
+            return contact.id;
+        case ContactRole:
+            return QVariant::fromValue<Contact>(contact);
     }
     return QVariant();
 }
 
-bool ContactModel::setData(const QModelIndex &index, const QVariant &value, int role)
-{
+bool ContactModel::setData(const QModelIndex &index, const QVariant &value, int role) {
     int row = index.row();
-    if(row < 0 || row >= m_data.count())
-    {
+    if(row < 0 || row >= m_contacts.count()) {
         return false;
     }
 
-    if (role == FavoriteRole)
-    {
-        ContactData &contactData = m_data[row];
-        bool newFavoriteValue = value.toBool();
-        if(contactData.favorite != newFavoriteValue)
-        {
-            contactData.favorite = newFavoriteValue;
+    Contact &contact = m_contacts[row];
+    switch(role){
+        case NameRole:
+            contact.fullName = value.toString();
             emit dataChanged(index, index, { role });
             return true;
+
+        case PhoneNumberRole:
+            contact.phoneNumber = value.toString();
+            emit dataChanged(index, index, { role });
+            return true;
+
+        case ImageRole:
+            contact.image = value.toString();
+            emit dataChanged(index, index, { role });
+            return true;
+
+        case FavoriteRole:{
+            bool newFavoriteValue = value.toBool();
+            if(contact.favorite != newFavoriteValue) {
+                contact.favorite = newFavoriteValue;
+                emit dataChanged(index, index, { role });
+                return true;
+            }
         }
+
+        case TagRole:
+            contact.tag = value.toInt();
+            emit dataChanged(index, index, { role });
+            return true;
+
+        case EmailRole:
+            contact.email = value.toString();
+            emit dataChanged(index, index, { role });
+            return true;
+
+        case BirthdayRole:
+            contact.birthday = value.toDate();
+            emit dataChanged(index, index, { role });
+            return true;
+
+        case NotesRole:
+            contact.notes = value.toString();
+            emit dataChanged(index, index, { role });
+            return true;
     }
     return false;
 }
 
-QHash<int, QByteArray> ContactModel::roleNames() const
+void ContactModel::remove(int row){
+    removeRow(row);
+}
+
+bool ContactModel::removeRows(int row, int count, const QModelIndex &parent) {
+
+    Q_UNUSED(parent);
+    if (count < 1 || row < 0 || (row + count - 1) >= m_contacts.count())
+        return false;
+
+    beginRemoveRows(QModelIndex(), row, row + count - 1);
+    m_contacts.remove(row, count);
+    endRemoveRows();
+    return true;
+}
+
+bool ContactModel::insertRows(int row, int count, const QModelIndex &parent)
 {
+    if (count < 1 || row < 0 || row > m_contacts.count())
+        return false;
+
+    beginInsertRows(parent, row, row + count - 1);
+    m_contacts.insert(row, count, Contact{});
+    endInsertRows();
+    return true;
+}
+
+QHash<int, QByteArray> ContactModel::roleNames() const {
     return m_roleNames;
+}
+
+void ContactModel::append(const QString &fullName, const QString &phoneNumber, const bool favorite, const int tag, const QString  &image,
+                          const QString  &email, QDate birthday, const QString &notes) {
+    int rowIndex = rowCount({});
+    insertRow(rowCount({}), {});
+    setData(rowIndex, fullName, phoneNumber, image, favorite, tag, email, birthday, notes);
+}
+
+void ContactModel::setData(int row, const QString &fullName, const QString &phoneNumber, const QString  &image,
+                       const bool favorite, const int tag, const QString  &email, QDate birthday, const QString &notes) {
+    if (row < 0 || row >= m_contacts.count())
+        return;
+
+    auto itemIndex = index(row);
+    //TODO: replace by new Contact object
+
+    setData(itemIndex, fullName, NameRole);
+    setData(itemIndex, phoneNumber, PhoneNumberRole);
+    setData(itemIndex, image, ImageRole);
+    setData(itemIndex, favorite, FavoriteRole);
+    setData(itemIndex, tag, TagRole);
+    setData(itemIndex, email, EmailRole);
+    setData(itemIndex, birthday, BirthdayRole);
+    setData(itemIndex, notes, NotesRole);
+    setData(itemIndex, getUniqueId(), IdRole);
 }

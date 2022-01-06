@@ -7,12 +7,35 @@ RowLayout
 {
     id:root
 
+    property alias contextMenu: contextMenu_
     property bool favorite: model.favorite
 
     signal imageClicked()
     onFavoriteChanged: model.favorite = favorite
 
     height: 74
+
+
+    Menu {
+        id: contextMenu_
+
+        MenuItem {
+            text: qsTr("Edit number")
+            onTriggered:{
+                let contact = contactProxyModel.getContact(index);
+                contact.image = (model.image)? model.image : "";
+                addButton.editContact(contact, index)
+            }
+        }
+
+        MenuItem {
+            text: "Remove"
+            onTriggered:{
+                contactProxyModel.remove(index)
+            }
+        }
+    }
+
 
     Image
     {
@@ -23,6 +46,7 @@ RowLayout
         Layout.maximumWidth: 56
         Layout.maximumHeight: 56
         source: model.image
+
         fillMode: Image.PreserveAspectCrop
         layer.enabled: true
         layer.effect: OpacityMask
@@ -33,11 +57,11 @@ RowLayout
         Rectangle
         {
             id: mask
-
             anchors.fill: parent
             radius: Math.max(width, height)
             visible: false
         }
+
         MouseArea{
             anchors.fill: parent
             onClicked: root.imageClicked()

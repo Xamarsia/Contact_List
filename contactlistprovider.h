@@ -2,15 +2,11 @@
 
 #include <QList>
 #include <QString>
+#include "common.h"
 
 class ContactListProvider
 {
 public:
-    struct Contact{
-        int id{};
-        QString name{};
-        QString image{};
-    };
 
     static const QList<Contact>& getContactsList();
 

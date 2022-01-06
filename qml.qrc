@@ -12,5 +12,6 @@
         <file>BaseContactInfo.qml</file>
         <file>ContactPage.qml</file>
         <file>ContactView.qml</file>
+        <file>ContactForm.qml</file>
     </qresource>
 </RCC>

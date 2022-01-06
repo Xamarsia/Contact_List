@@ -4,7 +4,7 @@ import QtQuick.Controls 2.4
 Rectangle {
     id: root
     width: ListView.view.width
-    height: 64
+    height: 54
     color: '#00000000'
 
     Text {

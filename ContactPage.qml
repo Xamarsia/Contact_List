@@ -7,6 +7,9 @@ import QtQuick.Controls 2.12
 Page {
     id: page
 
-    Background{}
+    Background {
+        anchors.fill: parent
+        color: "red"
+    }
 }
 
