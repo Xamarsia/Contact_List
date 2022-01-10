@@ -8,9 +8,11 @@ ToolBar
 
     property bool showOnlyFavorite: false
     property bool showGrid: false
-    signal previousPage()
 
+    signal previousPage()
     signal filterChanged(string filter)
+    signal importToFile()
+    signal exportFromFile()
 
     RowLayout
     {
@@ -71,6 +73,17 @@ ToolBar
                        }
                    }
                }
+
+               Action {
+                   text: qsTr("Import to file")
+                   onTriggered: importToFile()
+               }
+
+               Action {
+                   text: qsTr("Export from file")
+                   onTriggered: exportFromFile()
+               }
+
            }
         }
     }

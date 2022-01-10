@@ -102,6 +102,37 @@ GridLayout {
 
     TextField {
         id: birthday_
+
+        MouseArea {
+                anchors.fill: parent
+                onClicked:{ inputDialog.open();
+                    console.debug("Got click event received! \nSetting focus for TextField"); }
+            }
+
+        Dialog {
+            id: inputDialog
+
+            x: (parent.width - width) / 2
+            y: (parent.height - height) / 2
+            parent: Overlay.overlay
+
+            focus: true
+            modal: true
+            title: "Input"
+            standardButtons: Dialog.Ok | Dialog.Cancel
+
+            Label {
+                elide: Label.ElideRight
+                text: "Please enter the birthday data:"
+                Layout.fillWidth: true
+            }
+            Label {
+                elide: Label.ElideRight
+                text: "here is the calendar"
+                Layout.fillWidth: true
+            }
+        }
+
     }
 
     Label {
@@ -111,9 +142,4 @@ GridLayout {
     TextField {
         id: notes_
     }
-
-//    Calendar {
-//        minimumDate: new Date(2000, 0, 1)
-//        maximumDate: new Date(2022, 0, 1)
-//    }
 }

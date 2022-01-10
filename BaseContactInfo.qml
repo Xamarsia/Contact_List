@@ -7,35 +7,11 @@ RowLayout
 {
     id:root
 
-    property alias contextMenu: contextMenu_
     property bool favorite: model.favorite
-
     signal imageClicked()
     onFavoriteChanged: model.favorite = favorite
 
     height: 74
-
-
-    Menu {
-        id: contextMenu_
-
-        MenuItem {
-            text: qsTr("Edit number")
-            onTriggered:{
-                let contact = contactProxyModel.getContact(index);
-                contact.image = (model.image)? model.image : "";
-                addButton.editContact(contact, index)
-            }
-        }
-
-        MenuItem {
-            text: "Remove"
-            onTriggered:{
-                contactProxyModel.remove(index)
-            }
-        }
-    }
-
 
     Image
     {
@@ -92,6 +68,51 @@ RowLayout
         font.pixelSize: 24
         text: model.name
         color: "#ffffff"
+    }
+
+//    Text
+//    {
+//        font.pixelSize: 24
+//        text: model.id
+//        color: "#ffffff"
+//    }
+
+    Image
+    {
+        id: editImage
+
+        Layout.alignment: Qt.AlignVCenter | Qt.AlignRight
+        Layout.rightMargin: 16
+        Layout.maximumWidth: 24
+        Layout.maximumHeight: 26
+        source: "qrc:/call/edit.png"
+
+        MouseArea
+        {
+            anchors.fill: parent
+            onClicked: {
+                let contact = contactProxyModel.getContact(index);
+                contact.image = (model.image)? model.image : "";
+                addButton.editContact(contact, index)
+            }
+        }
+    }
+
+    Image
+    {
+        id: deleteImage
+
+        Layout.alignment: Qt.AlignVCenter | Qt.AlignRight
+        Layout.rightMargin: 16
+        Layout.maximumWidth: 24
+        Layout.maximumHeight: 26
+        source: "qrc:/call/delete.png"
+
+        MouseArea
+        {
+            anchors.fill: parent
+            onClicked: contactProxyModel.remove(index)
+        }
     }
 
     Image

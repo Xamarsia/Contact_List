@@ -10,7 +10,6 @@ Rectangle
     signal backgroundClicked();
     signal pressAndHold(int index);
 
-    width: 120
     height: 74
     radius: 20
     color: ListView.isCurrentItem ? "#00838F" : "#00ACC1"
@@ -33,7 +32,7 @@ Rectangle
         root.backgroundClicked()
         root.state == 'clicked' ? root.state = "" : root.state = 'clicked';
         }
-//        onPressAndHold: root.pressAndHold(index);
+
         onPressAndHold: {
          root.pressAndHold(index);
          baseInfo.contextMenu.popup();

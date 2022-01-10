@@ -23,5 +23,14 @@
         <file>contacts/man12.png</file>
         <file>star/emptyStar.png</file>
         <file>star/star.png</file>
+        <file>toolBar/back.png</file>
+        <file>contacts/defaultImage.png</file>
+        <file>call/delete.png</file>
+        <file>call/edit.png</file>
+    </qresource>
+    <qresource prefix="/toolBar">
+        <file>toolBar/back.png</file>
+        <file>toolBar/drawer.png</file>
+        <file>toolBar/menu.png</file>
     </qresource>
 </RCC>

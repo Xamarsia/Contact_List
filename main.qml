@@ -12,7 +12,8 @@ ApplicationWindow
     property int currentIndex: 0
     property string currentImage: ""
 
-    width: 440
+
+    width: 528
     height: 480
     visible: true
     title: qsTr("Hello World")
@@ -31,6 +32,10 @@ ApplicationWindow
 
         onFilterChanged: function(filter){
             contactProxyModel.setFilter(filter)
+        }
+
+        onImportToFile:{
+
         }
     }
 
