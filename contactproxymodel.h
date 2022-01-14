@@ -25,6 +25,10 @@ public:
 
     Q_INVOKABLE void remove(int row);
 
+    Q_INVOKABLE void importFromFile();
+
+//    Q_INVOKABLE void importToFile();
+
 private:
     bool filterAcceptsRow(int sourceRow, const QModelIndex &sourceParent) const  override;
 

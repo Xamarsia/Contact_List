@@ -1,6 +1,7 @@
 #pragma once
 #include <QDate>
 #include <QDebug>
+#include <iostream>
 
 enum Tag
 {
@@ -11,13 +12,19 @@ enum Tag
     FAMILIAR
 };
 
-static int getUniqueId() {
-    static unsigned int Id = 0;
-    Id++;
-    return Id - 1;
-}
+enum Characteristics
+{
+    NAME,
+    PHONENUMBER,
+    IMAGE,
+    FAVORITE,
+    TAG,
+    EMAIL,
+    BIRTHDAY,
+    NOTES,
+};
 
-struct Contact {
+class Contact {
     Q_GADGET
 
     Q_PROPERTY(QString fullName MEMBER fullName)
@@ -41,12 +48,16 @@ public:
     QString email{};
     QDate birthday{};
     QString notes{};
-    int id{};
+    int id = 0;
 
-
-
-
+    Contact();
+    Contact(const int id);
+    Contact(QString _fullName, QString _phoneNumber, QString _image, bool _favorite, int _tag, const QString  &_email = "", QDate _birthday = QDate(1000, 1, 1), const QString &_notes = "");
+    Contact(QString _fullName, QString _phoneNumber, QString _image, bool _favorite, int _tag, const QString  &_email, QDate _birthday, const QString &_notes, const int id);
 };
 
 Q_DECLARE_METATYPE(Contact)
-//QDebug << ( Tag.())
+
+
+
+

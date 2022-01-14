@@ -8,9 +8,11 @@ CONFIG += c++14 sql
 #DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs deprecated before Qt 6.0.0
 
 SOURCES += \
+        common.cpp \
         contactlistprovider.cpp \
         contactmodel.cpp \
         contactproxymodel.cpp \
+        csvparser.cpp \
         main.cpp
 
 RESOURCES += qml.qrc \
@@ -31,6 +33,7 @@ HEADERS += \
     common.h \
     contactlistprovider.h \
     contactmodel.h \
-    contactproxymodel.h
+    contactproxymodel.h \
+    csvparser.h
 
 DISTFILES +=

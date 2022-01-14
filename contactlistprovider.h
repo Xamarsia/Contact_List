@@ -2,13 +2,15 @@
 
 #include <QList>
 #include <QString>
+
 #include "common.h"
+#include "csvparser.h"
 
 class ContactListProvider
 {
 public:
 
-    static const QList<Contact>& getContactsList();
+    static QList<Contact>& getContactsList();
 
     static void call(int id);
 
@@ -21,4 +23,5 @@ private:
     ContactListProvider& operator=(const ContactListProvider&)= delete;
 
     QList<Contact> m_contactsList;
+
 };

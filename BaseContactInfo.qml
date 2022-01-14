@@ -9,6 +9,7 @@ RowLayout
 
     property bool favorite: model.favorite
     signal imageClicked()
+    signal edit(int index)
     onFavoriteChanged: model.favorite = favorite
 
     height: 74
@@ -93,7 +94,8 @@ RowLayout
             onClicked: {
                 let contact = contactProxyModel.getContact(index);
                 contact.image = (model.image)? model.image : "";
-                addButton.editContact(contact, index)
+                addButton.editContact(contact, index);
+                root.edit(index)
             }
         }
     }
@@ -111,7 +113,28 @@ RowLayout
         MouseArea
         {
             anchors.fill: parent
-            onClicked: contactProxyModel.remove(index)
+            onClicked: confirmationDialog.open()
+
+            Dialog {
+                id: confirmationDialog
+
+                x: (parent.width - width) / 2
+                y: (parent.height - height) / 2
+                parent: Overlay.overlay
+
+                modal: true
+                title: "Delete contact?"
+                standardButtons: Dialog.Yes | Dialog.Cancel
+
+                Column {
+                    spacing: 20
+                    anchors.fill: parent
+                    Label {
+                        text: "This contact will be permanently deleted from your device"
+                    }
+                }
+                onAccepted: contactProxyModel.remove(index);
+            }
         }
     }
 
