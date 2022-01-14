@@ -37,7 +37,7 @@ Item {
 
             onOpenPage: addPage();
 
-            onPressAndHold:  currentContact = index
+            onClicked: currentContact = index
         }
     }
 

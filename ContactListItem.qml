@@ -8,7 +8,8 @@ Rectangle
 
     signal contactImagePressed();
     signal backgroundClicked();
-    signal pressAndHold(int index);
+    signal cliced(int index)
+
 
     height: 74
     radius: 20
@@ -31,13 +32,10 @@ Rectangle
         onClicked: {
         root.backgroundClicked()
         root.state == 'clicked' ? root.state = "" : root.state = 'clicked';
-        }
-
-        onPressAndHold: {
-         root.pressAndHold(index);
-         baseInfo.contextMenu.popup();
+        root.cliced(currentIndex)
         }
     }
+
 
     Column{
         id:column
@@ -51,6 +49,7 @@ Rectangle
             onImageClicked: {
                 root.contactImagePressed()
             }
+            onEdit: root.cliced(index)
         }
 
         FullContactInfo{

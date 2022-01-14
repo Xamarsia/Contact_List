@@ -6,7 +6,7 @@ ListView
 {
     id: root
 
-    signal pressAndHold(int index)
+    signal clicked(int index)
     signal callClicked(int id)
     signal openPage()
 
@@ -21,7 +21,9 @@ ListView
 
         onBackgroundClicked: root.currentIndex = index;
         onContactImagePressed: root.openPage()
-        onPressAndHold: root.pressAndHold(index) 
+        onCliced: {
+            root.clicked(index);
+        }
     }
 
     focus: true

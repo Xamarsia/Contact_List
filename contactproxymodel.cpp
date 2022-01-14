@@ -1,7 +1,8 @@
 #include "contactproxymodel.h"
 #include "contactlistprovider.h"
 #include "contactmodel.h"
-#include "QDebug"
+
+#include <QDebug>
 
 ContactProxyModel::ContactProxyModel(QObject *parent) : QSortFilterProxyModel(parent)
 {
@@ -64,6 +65,15 @@ void ContactProxyModel::remove(int row){
         return;
     }
      contactModel->remove(i.row());
+}
+
+void ContactProxyModel::importFromFile(){
+    ContactModel* contactModel = dynamic_cast<ContactModel*>(sourceModel());
+    if(contactModel == nullptr)
+    {
+        return;
+    }
+     contactModel->importFromFile();
 }
 
 void ContactProxyModel::showOnlyFavorite(bool showFavorite)

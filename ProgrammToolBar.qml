@@ -12,7 +12,7 @@ ToolBar
     signal previousPage()
     signal filterChanged(string filter)
     signal importToFile()
-    signal exportFromFile()
+    signal importFromFile()
 
     RowLayout
     {
@@ -75,13 +75,16 @@ ToolBar
                }
 
                Action {
-                   text: qsTr("Import to file")
-                   onTriggered: importToFile()
+                   text: qsTr("Export to file")
+                   onTriggered: {
+
+                   }
                }
 
+
                Action {
-                   text: qsTr("Export from file")
-                   onTriggered: exportFromFile()
+                   text: qsTr("Import from file")
+                   onTriggered: importFromFile()
                }
 
            }

@@ -1,8 +1,12 @@
 import QtQuick.Window 2.12
 import QtQuick 2.5
-import QtQuick.Dialogs 1.2
+//import QtQuick.Dialogs 1.3
+//import QtQuick.Dialogs 1.2
 import QtQuick.Controls 2.12
 import QtQuick.Layouts 1.12
+import QtQuick 2.2
+import QtQuick.Dialogs 1.0
+
 
 ApplicationWindow
 {
@@ -10,6 +14,7 @@ ApplicationWindow
 
     property bool onlyFavorite: false
     property int currentIndex: 0
+    property int currentId: 0
     property string currentImage: ""
 
 
@@ -35,9 +40,28 @@ ApplicationWindow
         }
 
         onImportToFile:{
-
+//            fileDialog.visible = true
+        }
+        onImportFromFile: {
+            contactProxyModel.importFromFile();
         }
     }
+
+//    FileDialog {
+//        id: fileDialog
+//        title: "Please choose a file"
+//        folder: shortcuts.home
+//        onAccepted: {
+//            console.log("You chose: " + fileDialog.fileUrls)
+//            Qt.quit()
+//        }
+//        onRejected: {
+//            console.log("Canceled")
+//            Qt.quit()
+//        }
+//        Component.onCompleted: visible = false
+//        nameFilters: [ "Image files (*.jpg *.png)", "All files (*)" ]
+//    }
 
     Background{
         id: background
@@ -96,6 +120,7 @@ ApplicationWindow
             function editContact(contact, index) {
                 currentIndex = index;
                 currentImage = contact.image;
+                currentId = contact.id
 
                 contactForm.fullName.text = contact.fullName;
                 contactForm.phoneNumber.text = contact.phoneNumber;
@@ -138,7 +163,7 @@ ApplicationWindow
                     }
                     else{
                         contactProxyModel.setData(currentIndex, contactForm.fullName.text, contactForm.phoneNumber.text, currentImage, contactForm.favorite,
-                                                 contactForm.tag.currentIndex, contactForm.email.text, contactForm.birthday.text, contactForm.notes.text)
+                                                 contactForm.tag.currentIndex, contactForm.email.text, contactForm.birthday.text, contactForm.notes.text, currentId)
                     }
                 }
             }

@@ -4,6 +4,7 @@
 
 #include "contactmodel.h"
 #include "contactproxymodel.h"
+#include "csvparser.h"
 
 #include <QStandardItemModel>
 
@@ -24,7 +25,6 @@ int main(int argc, char *argv[])
 
     QStandardItemModel *model = new QStandardItemModel(&app);
     engine.rootContext()->setContextProperty("testModel", model);
-
 
     engine.load(QUrl(QStringLiteral("qrc:/main.qml")));
     return app.exec();

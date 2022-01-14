@@ -36,6 +36,8 @@ public:
 
     virtual bool insertRows(int row, int count, const QModelIndex &parent = QModelIndex()) override;
 
+
+
     Q_INVOKABLE void append(const QString &fullName, const QString &phoneNumber, const bool favorite, const int tag, const QString  &image = "",
                             const QString  &email = "", QDate birthday = QDate(1000, 1, 1), const QString &notes = "");
 
@@ -46,11 +48,15 @@ public:
 
     Q_INVOKABLE void remove(int row);
 
-private:
+    Q_INVOKABLE void importFromFile();
 
+private:
+    static int Id;
     QVector<Contact> m_contacts;
     QHash<int, QByteArray> m_roleNames;
+    CsvParser* m_parser;
 
+    void append(const QVector<Contact>& contacts);
 signals:
 
     void contactStructChanged();

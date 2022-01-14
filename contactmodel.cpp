@@ -1,4 +1,5 @@
 #include "contactmodel.h"
+#include "csvparser.h"
 
 ContactModel::ContactModel(QObject *parent)
     : QAbstractListModel(parent){
@@ -11,6 +12,8 @@ ContactModel::ContactModel(QObject *parent)
     m_roleNames[BirthdayRole] = "birthday";
     m_roleNames[NotesRole] = "notes";
     m_roleNames[IdRole] = "id";
+
+    m_parser = new CsvParser(this);
 
     for(const Contact& contact : ContactListProvider::getContactsList()) {
         m_contacts.append(contact);
@@ -118,9 +121,16 @@ bool ContactModel::setData(const QModelIndex &index, const QVariant &value, int 
             contact.notes = value.toString();
             emit dataChanged(index, index, { role });
             return true;
+        case IdRole:
+            contact.id = value.toInt();
+            emit dataChanged(index, index, { role });
+            return true;
     }
     return false;
 }
+
+
+
 
 void ContactModel::remove(int row){
     removeRow(row);
@@ -134,9 +144,12 @@ bool ContactModel::removeRows(int row, int count, const QModelIndex &parent) {
 
     beginRemoveRows(QModelIndex(), row, row + count - 1);
     m_contacts.remove(row, count);
+    ContactListProvider::getContactsList().removeAt(row);
     endRemoveRows();
     return true;
 }
+
+int ContactModel::Id = 0;
 
 bool ContactModel::insertRows(int row, int count, const QModelIndex &parent)
 {
@@ -144,7 +157,8 @@ bool ContactModel::insertRows(int row, int count, const QModelIndex &parent)
         return false;
 
     beginInsertRows(parent, row, row + count - 1);
-    m_contacts.insert(row, count, Contact{});
+    Id++;
+    m_contacts.insert(row, count, Contact{Id});
     endInsertRows();
     return true;
 }
@@ -152,6 +166,33 @@ bool ContactModel::insertRows(int row, int count, const QModelIndex &parent)
 QHash<int, QByteArray> ContactModel::roleNames() const {
     return m_roleNames;
 }
+
+void ContactModel::importFromFile(){
+     append(m_parser->read());
+}
+
+void  ContactModel::append(const QVector<Contact>& contacts) {
+     int rowIndex = rowCount({});
+     for(const Contact& contact : contacts) {
+
+         auto iter = std::find_if(m_contacts.begin(), m_contacts.end(),
+             [contact] (const Contact &person)
+             {
+                 return contact.fullName == person.fullName;
+             });
+
+         if(iter != m_contacts.end()){
+             // TODO suggest replacing contact
+             return;
+         }
+
+
+         insertRow(rowCount({}), {});
+
+         setData(rowIndex, contact.fullName, contact.phoneNumber, contact.image, contact.favorite, contact.tag, contact.email, contact.birthday, contact.notes);
+         ++rowIndex;
+     }
+ }
 
 void ContactModel::append(const QString &fullName, const QString &phoneNumber, const bool favorite, const int tag, const QString  &image,
                           const QString  &email, QDate birthday, const QString &notes) {
@@ -167,7 +208,6 @@ void ContactModel::setData(int row, const QString &fullName, const QString &phon
 
     auto itemIndex = index(row);
     //TODO: replace by new Contact object
-
     setData(itemIndex, fullName, NameRole);
     setData(itemIndex, phoneNumber, PhoneNumberRole);
     setData(itemIndex, image, ImageRole);
@@ -176,5 +216,7 @@ void ContactModel::setData(int row, const QString &fullName, const QString &phon
     setData(itemIndex, email, EmailRole);
     setData(itemIndex, birthday, BirthdayRole);
     setData(itemIndex, notes, NotesRole);
-    setData(itemIndex, getUniqueId(), IdRole);
+
+    Contact contact = Contact(fullName, phoneNumber, image, favorite, tag, email, birthday, notes, Id);
+    ContactListProvider::getContactsList().append(contact);
 }

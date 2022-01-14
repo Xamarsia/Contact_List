@@ -32,5 +32,9 @@
         <file>toolBar/back.png</file>
         <file>toolBar/drawer.png</file>
         <file>toolBar/menu.png</file>
+        <file>contacts.csv</file>
+    </qresource>
+    <qresource prefix="/csexample">
+        <file>contacts.csv</file>
     </qresource>
 </RCC>
